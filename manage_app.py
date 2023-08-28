@@ -26,7 +26,7 @@ def adding():
     new.geometry("550x450")
     new.title("Add data")
 
-    def values(event):
+    def values(event=None):
         det = [name.get().capitalize(), age.get(), address.get(), mark.get(), section.get()]
         mycursor.execute(f"insert into students(name,age,address,mark,section)values('{det[0]}',{det[1]},'{det[2]}',{det[3]},'{det[4]}')")
         mydb.commit()
@@ -81,7 +81,7 @@ def searching():
     ttl1 = Label(new, text="Find Data", font=('Arial', 18))
     ttl1.pack(padx=20, pady=20)
 
-    def getdata(event):
+    def getdata(event=None):
         src = to_search.get().capitalize()
         print(src)
         mycursor.execute(f"select * from students where name='{src}'")
@@ -108,7 +108,7 @@ def delete():
     ttl1 = Label(new, text="Delete Data", font=('Arial', 18))
     ttl1.pack(padx=20, pady=20)
 
-    def getdat(event):
+    def getdat(event=None):
         dell = to_del.get().capitalize()
         if dell == "All":
             mycursor.execute("TRUNCATE TABLE students")
@@ -131,7 +131,7 @@ def update():
     ttl1 = Label(new, text="Update Data", font=('Arial', 18))
     ttl1.pack(padx=20, pady=20)
 
-    def getupdate(event):
+    def getupdate(event=None):
         up_name = to_up.get().capitalize()
         new_name = cng.get().capitalize()
         mycursor.execute(f"update students set name='{new_name}' where name='{up_name}'")
@@ -147,7 +147,7 @@ def update():
     btn = Button(new, text="Submit", command=getupdate)
     btn.pack()
     new.bind('<Return>', getupdate)
-def val(event):
+def val(event=None):
     user = ask.get()
     user = user.lower()
     if user== 'add':

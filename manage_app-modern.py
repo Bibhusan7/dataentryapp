@@ -9,7 +9,7 @@ else:
 mycursor = mydb.cursor()
 from customtkinter import *
 set_appearance_mode('light')
-set_default_color_theme('blue')
+set_default_color_theme('green')
 
 root = CTk()
 root.geometry("500x300")
@@ -27,7 +27,7 @@ def adding():
     new.geometry("600x500")
     new.title("Add data")
     new.attributes('-topmost', True)
-    def values(event):
+    def values(event=None):
         det = [name.get().capitalize(), age.get(), address.get(), mark.get(), section.get()]
         mycursor.execute(f"insert into students(name,age,address,mark,section)values('{det[0]}',{det[1]},'{det[2]}',{det[3]},'{det[4]}')")
         mydb.commit()
@@ -83,7 +83,7 @@ def searching():
     ttl1 = CTkLabel(new, text="Find Data", font=('Lucida Console', 18))
     ttl1.pack(padx=20, pady=20)
 
-    def getdata(event):
+    def getdata(event=None):
         src = to_search.get().capitalize()
         print(src)
         mycursor.execute(f"select * from students where name='{src}'")
@@ -111,7 +111,7 @@ def delete():
     ttl1 = CTkLabel(new, text="Delete Data", font=('Lucida Console', 18))
     ttl1.pack(padx=20, pady=20)
 
-    def getdat(event):
+    def getdat(event=None):
         dell = to_del.get().capitalize()
         if dell == "All":
             mycursor.execute("TRUNCATE TABLE students")
@@ -135,7 +135,7 @@ def update():
     ttl1 = CTkLabel(new, text="Update Data", font=('Lucida Console', 18))
     ttl1.pack(padx=20, pady=20)
 
-    def getupdate(event):
+    def getupdate(event=None):
         up_name = to_up.get().capitalize()
         new_name = cng.get().capitalize()
         mycursor.execute(f"update students set name='{new_name}' where name='{up_name}'")
@@ -151,7 +151,7 @@ def update():
     btn = CTkButton(new, text="Submit",width=140, font=("Lucida Console", 15), command=getupdate)
     btn.pack(pady=5)
     new.bind('<Return>', getupdate)
-def val(event):
+def val(event=None):
     user = ask.get()
     user = user.lower()
     if user== 'add':
