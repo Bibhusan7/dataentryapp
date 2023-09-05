@@ -1,27 +1,16 @@
+#modules
+from customtkinter import *
 import mysql.connector
 
+#connecting to database
 mydb = mysql.connector.connect(host="localhost", user="root", passwd="",db="std_details")
-if mydb:
-    print("connected")
-else:
-    print("not connected")
-
 mycursor = mydb.cursor()
-from customtkinter import *
+
+#setting appearance
 set_appearance_mode('light')
 set_default_color_theme('green')
 
-root = CTk()
-root.geometry("500x300")
-root.title('Student App')
-
-Ttl = CTkLabel(root, text="Data Entry", font=("Lucida Console", 20))
-Ttl.pack(padx=20,pady=10)
-
-AskLabel = CTkLabel(root, text="Add: Adds new detail\nView: Shows details\nSearch: Finds details of specific person\nUpdate: Update a data\nDelete: Delete a data\nExit: Exits",
-                 font=("Lucida Console", 15))
-AskLabel.pack(padx=10, pady=7)
-
+#app functions
 def adding():
     new = CTkToplevel()
     new.geometry("600x500")
@@ -115,8 +104,10 @@ def delete():
         dell = to_del.get().capitalize()
         if dell == "All":
             mycursor.execute("TRUNCATE TABLE students")
+            new.destroy()
         else:
             mycursor.execute(f"delete from students where name='{dell}'")
+            new.destroy()
 
 
     CTkLabel(new, text="Delete Name", font=('Lucida Console', 15, 'bold')).pack()
@@ -139,6 +130,7 @@ def update():
         up_name = to_up.get().capitalize()
         new_name = cng.get().capitalize()
         mycursor.execute(f"update students set name='{new_name}' where name='{up_name}'")
+        new.destroy()
 
     CTkLabel(new, text="Update Data of user", font=('Lucida Console', 15, 'bold')).pack()
     to_up = CTkEntry(new)
@@ -151,6 +143,8 @@ def update():
     btn = CTkButton(new, text="Submit",width=140, font=("Lucida Console", 15), command=getupdate)
     btn.pack(pady=5)
     new.bind('<Return>', getupdate)
+
+#Getting user choice values from entry and then calling the needed function
 def val(event=None):
     user = ask.get()
     user = user.lower()
@@ -158,7 +152,6 @@ def val(event=None):
         adding()
     elif user == 'view':
         viewing()
-
     elif user == 'search':
         searching()
     elif user == 'delete':
@@ -170,6 +163,19 @@ def val(event=None):
     else:
         pass
 
+#main window elements
+root = CTk()
+root.geometry("500x300")
+root.title('Student App')
+
+
+Ttl = CTkLabel(root, text="Data Entry", font=("Lucida Console", 20))
+Ttl.pack(padx=20,pady=10)
+
+AskLabel = CTkLabel(root, text="Add: Adds new detail\nView: Shows details\nSearch: Finds details of specific person\nUpdate: Update a data\nDelete: Delete a data\nExit: Exits",
+                 font=("Lucida Console", 15))
+AskLabel.pack(padx=10, pady=7)
+
 ask = CTkEntry(root)
 ask.pack(padx=10,pady=12)
 
@@ -177,6 +183,5 @@ askBtn = CTkButton(root, text="Submit",width=140, font=("Lucida Console", 15),co
 askBtn.pack()
 
 root.bind('<Return>', val)
-print(get_appearance_mode())
 
 root.mainloop()
